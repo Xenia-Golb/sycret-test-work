@@ -1,0 +1,16 @@
+.card {
+    width: 200px;
+    height: 220px;
+    border: 3px solid rgb(67, 20, 67);
+    background-color: #eec7e2;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+.card:hover {
+    box-shadow: 0 0 10px rgba(67, 20, 67, 0.5);
+    transition: box-shadow 0.3s ease;
+    transform: scale(1.02);
+    border-color: rgb(33, 33, 33);
+    cursor: pointer;
+}
