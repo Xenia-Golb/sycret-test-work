@@ -1,10 +1,15 @@
 .contacts {
     margin-top: 100px;
+    width: 50vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 30px;
+    background: linear-gradient(135deg, #f2d7e4, #e86bc2);
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btns {
@@ -15,9 +20,27 @@
 
 .text-area {
     width: 48vw;
-    padding: 10px;
+    padding: 15px;
     resize: none;
     border: 1px solid #323232;
+    background-color: transparent;
+    border-radius: 8px;
     font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.text-area:focus {
+    border-color: rgb(67, 20, 67);
+    box-shadow: 0 0 5px rgba(67, 20, 67, 0.5);
+    outline: none;
 
 }
+
+.errorLabel {
+    color: rgb(201, 11, 74);
+    font-size: 0.875em;
+    margin-top: 4px;
+    display: block;
+}
+
+/* */

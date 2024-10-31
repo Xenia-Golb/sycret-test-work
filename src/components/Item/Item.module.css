@@ -2,15 +2,17 @@
     width: 200px;
     height: 220px;
     border: 3px solid rgb(67, 20, 67);
-    background-color: #eec7e2;
+    background-color: #f1d4e2;
     box-sizing: border-box;
-    padding: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .card:hover {
-    box-shadow: 0 0 10px rgba(67, 20, 67, 0.5);
-    transition: box-shadow 0.3s ease;
-    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(67, 20, 67, 0.5);
+    transform: scale(1.05);
     border-color: rgb(33, 33, 33);
     cursor: pointer;
 }

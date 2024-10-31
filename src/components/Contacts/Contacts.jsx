@@ -1,33 +1,111 @@
-import Button from "../Button/Button";
-import Input from "../Input/Input";
+import { useSelector, useDispatch } from 'react-redux';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 import styles from './Contacts.module.css';
-import cn from 'classnames';
+import { updateFormField } from '../../redux/slices/formReducer';
+import { useState, useEffect } from 'react';
 
 function Contacts({ onClickToBack, onClickToExits }) {
-    return (<div className={styles['contacts']}>
-        <Input
-            placeholder="Введите имя"
-            appearance="title"
-        />
-        <Input
-            placeholder="Введите номер телефона"
-            appearance="title"
-        />
-        <textarea name="post" id="" cols="30"
-            placeholder="Ваше сообщение ... "
-            rows="10" className={styles['text-area']}></textarea>
-        <Input
-            placeholder="Введите адрес электронной почты"
-            appearance="title"
-        />
-        <div className={styles['btns']}>
-            <Button onClick={onClickToBack}
-            >Назад</Button>
-            <Button onClick={onClickToExits}>Оплатить</Button>
+    const dispatch = useDispatch();
+    const { name, phone, message, email } = useSelector((state) => state.form.values);
+    const [errors, setErrors] = useState({}); // Состояние для хранения ошибок
+
+    const handleInputChange = (field) => (event) => {
+        dispatch(updateFormField(field, event.target.value));
+        setErrors({ ...errors, [field]: undefined }); // Сбрасываем ошибку при изменении
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!name || name.trim().length === 0) {
+            newErrors.name = 'Пожалуйста, заполните обязательное поле имени';
+        }
+        if (!phone || phone.trim().length === 0) {
+            newErrors.phone = 'Пожалуйста, заполните обязательное поле телефона';
+        } else if (!/^\+?[78]\s?[-]?(\(\d{3}\)|\d{3})[-]?\d{3}[-]?\d{2}[-]?\d{2}$/.test(phone)) {
+            newErrors.phone = 'Введите корректный номер телефона';
+        }
+        if (!email || email.trim().length === 0) {
+            newErrors.email = 'Пожалуйста, заполните обязательное поле электронной почты';
+        } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
+            newErrors.email = 'Введите корректный адрес электронной почты';
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleFormSubmit = () => {
+        if (validateForm()) {
+            onClickToExits();
+        }
+    };
+
+    // Очистка данных при переходе на другую страницу
+    useEffect(() => {
+        return () => {
+            dispatch(updateFormField('name', ''));
+            dispatch(updateFormField('phone', ''));
+            dispatch(updateFormField('message', ''));
+            dispatch(updateFormField('email', ''));
+            setErrors({});
+        };
+    }, [dispatch]);
+
+    return (
+        <div className={styles['contacts']}>
+            <div className={styles.inputContainer}>
+                <Input
+                    placeholder="Илон Маск"
+                    autoFocus
+                    appearance="title"
+                    value={name}
+                    onChange={handleInputChange('name')}
+                    className={errors.name ? styles.errorInput : ''}
+                />
+                {errors.name && <label className={styles.errorLabel}>{errors.name}</label>} {/* Вывод ошибки как label */}
+            </div>
+            <div className={styles.inputContainer}>
+                <Input
+                    placeholder="+7(999)-999-99-99"
+                    type='tel'
+                    appearance=""
+                    value={phone}
+                    onChange={handleInputChange('phone')}
+                    className={errors.phone ? styles.errorInput : ''}
+                />
+                {errors.phone && <label className={styles.errorLabel}>{errors.phone}</label>} {/* Вывод ошибки как label */}
+            </div>
+            <div className={styles.inputContainer}>
+                <textarea
+                    name="message"
+                    cols="30"
+                    placeholder="Ваше сообщение ..."
+                    rows="10"
+                    className={`${styles['text-area']} ${errors.message ? styles.errorInput : ''}`}
+                    value={message}
+                    onChange={handleInputChange('message')}
+                />
+                {errors.message && <label className={styles.errorLabel}>{errors.message}</label>} {/* Вывод ошибки как label */}
+            </div>
+            <div className={styles.inputContainer}>
+                <Input
+                    placeholder="elon@musk.com"
+                    appearance="title"
+                    value={email}
+                    onChange={handleInputChange('email')}
+                    className={errors.email ? styles.errorInput : ''}
+                />
+                {errors.email && <label className={styles.errorLabel}>{errors.email}</label>} {/* Вывод ошибки как label */}
+            </div>
+            <div className={styles['btns']}>
+                <Button onClick={onClickToBack}>Назад</Button>
+                <Button onClick={handleFormSubmit}>Оплатить</Button>
+            </div>
         </div>
-
-
-    </div>);
+    );
 }
 
 export default Contacts;
