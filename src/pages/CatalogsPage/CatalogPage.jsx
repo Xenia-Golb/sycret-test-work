@@ -2,22 +2,51 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Catalog from "../../components/Catalog/Catalog";
-import fetchReducer from "../../redux/slices/fetchReducer";
+import { fetchList } from "../../redux/actions/actions"; // Импортируйте правильное действие
 
 function CatalogPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     // Извлекаем данные из Redux
-    const { loading, error } = useSelector((state) => state.list); // Теперь мы получаем только загрузку и ошибки
+    const { loading, error, list } = useSelector((state) => state.fetch);
 
     useEffect(() => {
-        // Загружаем список товаров при монтировании компонента
-        dispatch(fetchReducer());
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/api', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        ApiKey: "011ba11bdcad4fa396660c2ec447ef14", // Ваш API-ключ
+                        MethodName: "OSGetGoodList", // Имя метода
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Обработка данных и вызов соответствующих действий Redux
+                if (data.result === 0) {
+                    dispatch(fetchList(data.data)); // Успешно загруженные данные
+                } else {
+                    dispatch(fetchListFailure(data.resultdescription)); // Ошибка - передаем описание ошибки
+                }
+            } catch (error) {
+                dispatch(fetchListFailure(error.message)); // Ловим ошибки
+            }
+        };
+
+        fetchData();
     }, [dispatch]);
 
     const handleItemClick = (itemId) => {
-        console.log(`Товар с ID ${itemId} был нажат`); // Логируем нажатие
+        console.log(`Товар с ID ${itemId} был нажат`);
         navigate('/contacts'); // Переход на страницу контактов
     };
 
@@ -30,11 +59,12 @@ function CatalogPage() {
     }
 
     return (
-        <>
-            <Catalog
-                onItemClick={handleItemClick} // Передаем обработчик клика
-            />
-        </>
+        <Catalog
+            items={list}
+            loading={loading}
+            error={error}
+            onItemClick={handleItemClick}
+        />
     );
 }
 

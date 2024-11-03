@@ -3,16 +3,18 @@ import Item from "../Item/Item"; // Импорт компонента Item
 import style from "./Catalog.module.css"; // Импорт стилей
 
 function Catalog({ onItemClick }) {
-    const list = useSelector((state) => state.list.list); // Получаем список товаров из Redux
-    const loading = useSelector((state) => state.list.loading); // Получаем состояние загрузки
-    const error = useSelector((state) => state.list.error); // Получаем ошибки
+    const { loading, error, list } = useSelector((state) => state.fetch);
 
     if (loading) {
         return <div>Loading...</div>; // Индикатор загрузки
     }
 
     if (error) {
-        return <div>Error: {error}</div>; // Обработка ошибок
+        return <div>Error: {error.message || "Произошла ошибка при загрузке товаров."}</div>; // Обработка ошибок
+    }
+
+    if (!list.length) {
+        return <div>Нет доступных товаров.</div>; // Сообщение, если список пуст
     }
 
     return (

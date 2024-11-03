@@ -5,9 +5,13 @@ import fetchReducer from '../slices/fetchReducer';
 const store = configureStore({
     reducer: {
         form: formReducer,
-        list: fetchReducer,
+        fetch: fetchReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false, // Отключаем проверку сериализуемости, если это необходимо
+        }),
 });
+
 
 export default store;

@@ -6,3 +6,25 @@
     gap: 2em;
     justify-content: center;
 }
+
+/* Адаптивные стили */
+@media (max-width: 1200px) {
+    .catalog {
+        gap: 1.5em;
+    }
+}
+
+@media (max-width: 900px) {
+    .catalog {
+        flex-direction: column;
+        align-items: center;
+        /* Центрируем элементы по горизонтали */
+    }
+}
+
+@media (max-width: 600px) {
+    .catalog {
+        margin-top: 100px;
+        /* Уменьшаем отступ сверху для мобильных устройств */
+    }
+}

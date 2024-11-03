@@ -1,25 +1,35 @@
 .contacts {
     margin-top: 100px;
-    width: 50vw;
+    width: 90%;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 30px;
     background: linear-gradient(135deg, #f2d7e4, #e86bc2);
-    padding: 50px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
 .btns {
     display: flex;
-    gap: 40px;
+    gap: 20px;
+    /* Уменьшено для мобильных */
     flex-direction: row;
+    width: 100%;
+    /* Занимает всю ширину родителя */
+    justify-content: center;
+    /* Центрируем кнопки */
 }
 
 .text-area {
-    width: 48vw;
+    width: 100%;
+    /* Занимает всю ширину родителя */
+    max-width: 100%;
+    /* Максимальная ширина */
     padding: 15px;
     resize: none;
     border: 1px solid #323232;
@@ -27,13 +37,14 @@
     border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    /* Чтобы учитывать padding в ширине */
 }
 
 .text-area:focus {
     border-color: rgb(67, 20, 67);
     box-shadow: 0 0 5px rgba(67, 20, 67, 0.5);
     outline: none;
-
 }
 
 .errorLabel {
@@ -43,4 +54,20 @@
     display: block;
 }
 
-/* */
+/* Мобильные стили */
+@media (max-width: 600px) {
+    .contacts {
+        padding: 20px;
+        /* Уменьшение отступов для мобильных */
+    }
+
+    .btns {
+        gap: 10px;
+        /* Меньший отступ между кнопками на мобильных */
+    }
+
+    .text-area {
+        padding: 10px;
+        /* Уменьшение отступов в текстовой области */
+    }
+}

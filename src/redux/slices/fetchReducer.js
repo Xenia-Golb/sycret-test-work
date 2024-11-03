@@ -4,22 +4,27 @@ import { fetchListStart, fetchListSuccess, fetchListFailure } from '../actions/a
 const initialState = {
     list: [],
     loading: false,
-    error: null
+    error: null,
 };
 
 const fetchReducer = createReducer(initialState, (builder) => {
     builder
         .addCase(fetchListStart, (state) => {
-            state.loading = true;
-            state.error = null;
+            state.loading = true; // Начало загрузки
+            state.error = null;   // Сброс ошибки
         })
         .addCase(fetchListSuccess, (state, action) => {
-            state.loading = false;
-            state.goods = action.payload; // Список товаров
+            state.loading = false; // Завершение загрузки
+            state.list = action.payload; // Успешно загруженные данные
         })
         .addCase(fetchListFailure, (state, action) => {
-            state.loading = false;
+            state.loading = false; // Завершение загрузки
             state.error = action.payload; // Сообщение об ошибке
+        })
+        .addCase('RESET_FETCH_STATE', (state) => {
+            state.list = [];
+            state.loading = false;
+            state.error = null;
         });
 });
 
