@@ -35,10 +35,10 @@ function CatalogPage() {
                 if (data.result === 0) {
                     dispatch(fetchList(data.data)); // Успешно загруженные данные
                 } else {
-                    dispatch(fetchListFailure(data.resultdescription)); // Ошибка - передаем описание ошибки
+                    dispatch(fetchList(data.resultdescription)); // Ошибка - передаем описание ошибки
                 }
             } catch (error) {
-                dispatch(fetchListFailure(error.message)); // Ловим ошибки
+                dispatch(fetchList(error.message)); // Ловим ошибки
             }
         };
 
